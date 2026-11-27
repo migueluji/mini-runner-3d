@@ -12,22 +12,6 @@ import { crearGestorEsferas } from './collectibles.js';
 import { crearInterfaz } from './ui.js';
 
 /**
- * Detecta si WebGL se ejecuta por software para ajustar sombras y ritmo de dibujo.
- */
-function detectarWebGLSoftware() {
-  const lienzo = document.createElement('canvas');
-  const gl = lienzo.getContext('webgl2');
-  if (!gl) return true;
-
-  const ext = gl.getExtension('WEBGL_debug_renderer_info');
-  const parametro = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
-  const gpu = String(gl.getParameter(parametro));
-  gl.getExtension('WEBGL_lose_context')?.loseContext();
-
-  return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
-}
-
-/**
  * Crea la pista de tres carriles con marcas y postes móviles para dar sensación de velocidad.
  */
 function crearPistaMovil(escena) {
@@ -151,31 +135,9 @@ function crearPistaMovil(escena) {
 }
 
 /**
- * Pausa entre fotogramas cuando se renderiza con WebGL por software.
- */
-function esperarFinDibujo(renderizador, continuar) {
-  const gl = renderizador.getContext();
-  const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
-  gl.flush();
-
-  const comprobar = () => {
-    const estado = sync && gl.getSyncParameter(sync, gl.SYNC_STATUS);
-    if (estado === gl.UNSIGNALED) {
-      window.setTimeout(comprobar, 5);
-    } else {
-      gl.deleteSync(sync);
-      window.setTimeout(continuar, 80);
-    }
-  };
-  window.setTimeout(comprobar, 5);
-}
-
-/**
  * Inicializa y coordina todo el ciclo de vida del videojuego Mini Runner 3D.
  */
 export function crearJuego(contenedor) {
-  const esSoftwareGl = detectarWebGLSoftware();
-
   // Escena y niebla en el horizonte
   const escena = new THREE.Scene();
   escena.background = new THREE.Color(COLORES.cielo);
@@ -190,13 +152,13 @@ export function crearJuego(contenedor) {
 
   // Renderizador WebGL
   const renderizador = new THREE.WebGLRenderer({
-    antialias: !esSoftwareGl,
+    antialias: true,
     powerPreference: 'high-performance',
   });
   renderizador.outputColorSpace = THREE.SRGBColorSpace;
-  renderizador.setPixelRatio(esSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
+  renderizador.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderizador.setSize(anchoInicial, altoInicial);
-  renderizador.shadowMap.enabled = !esSoftwareGl;
+  renderizador.shadowMap.enabled = true;
   renderizador.shadowMap.type = THREE.PCFSoftShadowMap;
   contenedor.appendChild(renderizador.domElement);
 
@@ -206,7 +168,7 @@ export function crearJuego(contenedor) {
 
   const luzDireccional = new THREE.DirectionalLight(0xfff5e4, 1.45);
   luzDireccional.position.set(8, 16, 10);
-  luzDireccional.castShadow = !esSoftwareGl;
+  luzDireccional.castShadow = true;
   luzDireccional.shadow.mapSize.width = 1024;
   luzDireccional.shadow.mapSize.height = 1024;
   luzDireccional.shadow.camera.near = 1;
@@ -310,12 +272,7 @@ export function crearJuego(contenedor) {
     }
 
     renderizador.render(escena, camara);
-
-    if (esSoftwareGl) {
-      esperarFinDibujo(renderizador, buclePrincipal);
-    } else {
-      window.requestAnimationFrame(buclePrincipal);
-    }
+    window.requestAnimationFrame(buclePrincipal);
   }
 
   buclePrincipal();

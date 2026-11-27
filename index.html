@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Mini Runner 3D</title>
+    <meta name="description" content="Videojuego arcade 3D de tres carriles hecho con HTML5, CSS3, JavaScript ES6 y Three.js." />
+    <meta property="og:title" content="Mini Runner 3D" />
+    <meta property="og:description" content="Esquiva obstáculos rojos y recoge esferas de energía cian en tres carriles." />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main id="contenedor-juego">
+      <!-- Lienzo tridimensional -->
+      <div id="lienzo-3d" aria-label="Escenario 3D de Mini Runner"></div>
+
+      <!-- Marcador siempre visible -->
+      <div id="marcador" aria-live="polite">
+        <span class="etiqueta-puntos">Puntos</span>
+        <strong id="valor-puntuacion">0</strong>
+      </div>
+
+      <!-- Pantalla inicial -->
+      <section id="pantalla-inicio" class="pantalla-superpuesta" aria-label="Pantalla de inicio">
+        <div class="tarjeta-menu">
+          <h1>MINI RUNNER 3D</h1>
+          <p class="descripcion">Esquiva los bloques rojos y recoge las esferas de energía cian.</p>
+          <div class="bloque-controles">
+            <p><strong>Teclado:</strong> Flechas Izquierda / Derecha o teclas A / D</p>
+            <p><strong>Móvil:</strong> Botones táctiles en la parte inferior</p>
+          </div>
+          <button id="btn-jugar" class="boton-principal" type="button">Jugar</button>
+        </div>
+      </section>
+
+      <!-- Pantalla de fin de partida -->
+      <section id="pantalla-fin" class="pantalla-superpuesta oculto" aria-label="Fin de partida">
+        <div class="tarjeta-menu">
+          <h2>Fin de la partida</h2>
+          <p class="resumen-puntos">
+            Puntuación obtenida: <strong id="puntuacion-final">0</strong>
+          </p>
+          <button id="btn-reiniciar" class="boton-principal" type="button">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Controles táctiles para dispositivos móviles -->
+      <div id="controles-movil" aria-label="Controles táctiles">
+        <button id="btn-izquierda" class="boton-tactil" type="button" aria-label="Cambiar al carril izquierdo">◀</button>
+        <button id="btn-derecha" class="boton-tactil" type="button" aria-label="Cambiar al carril derecho">▶</button>
+      </div>
+    </main>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

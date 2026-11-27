@@ -1,0 +1,6 @@
+{
+  "name": "Proyecto 3D con Three.js",
+  "description": "Escena base 3D estática con HTML5, CSS3, ES6 y Three.js.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

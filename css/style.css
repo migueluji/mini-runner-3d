@@ -1,0 +1,203 @@
+/* Reinicio básico y bloqueo de scroll/zoom accidental */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #0e1628;
+  color: #f1f5f9;
+}
+
+#contenedor-juego {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#lienzo-3d {
+  width: 100%;
+  height: 100%;
+}
+
+#lienzo-3d canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Marcador superior siempre visible */
+#marcador {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.86);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  pointer-events: none;
+}
+
+.etiqueta-puntos {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+#valor-puntuacion {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #22d3ee;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pantallas superpuestas (inicio y fin) */
+.pantalla-superpuesta {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(8, 13, 26, 0.72);
+}
+
+.pantalla-superpuesta.oculto {
+  display: none;
+}
+
+.tarjeta-menu {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 24px;
+  border-radius: 14px;
+  background-color: #152036;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.tarjeta-menu h1,
+.tarjeta-menu h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #f8fafc;
+}
+
+.descripcion {
+  margin-top: 10px;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+.bloque-controles {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+  text-align: left;
+}
+
+.resumen-puntos {
+  margin-top: 14px;
+  font-size: 1.15rem;
+  color: #cbd5e1;
+}
+
+.resumen-puntos strong {
+  color: #22d3ee;
+  font-size: 1.4rem;
+}
+
+.boton-principal {
+  margin-top: 22px;
+  width: 100%;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #081221;
+  background-color: #22d3ee;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+  touch-action: manipulation;
+}
+
+.boton-principal:hover {
+  background-color: #67e8f9;
+}
+
+.boton-principal:active {
+  transform: scale(0.98);
+}
+
+/* Controles táctiles para móvil */
+#controles-movil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  z-index: 25;
+  display: none;
+  justify-content: space-between;
+  padding: 0 20px;
+  pointer-events: none;
+}
+
+/* Mostrar solo en dispositivos táctiles */
+body.es-tactil #controles-movil {
+  display: flex;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  #controles-movil {
+    display: flex;
+  }
+}
+
+.boton-tactil {
+  pointer-events: auto;
+  width: 88px;
+  height: 76px;
+  border-radius: 16px;
+  border: 2px solid rgba(34, 211, 238, 0.5);
+  background-color: rgba(15, 23, 42, 0.52);
+  color: #f8fafc;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.boton-tactil:active {
+  background-color: rgba(34, 211, 238, 0.35);
+  transform: scale(0.96);
+}

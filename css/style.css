@@ -191,6 +191,43 @@ body {
   transform: scale(0.98);
 }
 
+/* Aviso discreto para iPhone con Safari en la pantalla inicial */
+.aviso-iphone {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #cbd5e1;
+}
+
+.aviso-iphone.oculto {
+  display: none;
+}
+
+.boton-cerrar-aviso {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.boton-cerrar-aviso:hover {
+  color: #f8fafc;
+}
+
 /* Controles táctiles para móvil */
 #controles-movil {
   position: absolute;

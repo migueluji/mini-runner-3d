@@ -11,6 +11,8 @@ export function crearInterfaz({ alJugar, alReiniciar, alIzquierda, alDerecha }) 
   const btnIzquierda = document.getElementById('btn-izquierda');
   const btnDerecha = document.getElementById('btn-derecha');
   const btnPantallaCompleta = document.getElementById('btn-pantalla-completa');
+  const avisoIphone = document.getElementById('aviso-iphone');
+  const btnCerrarAvisoIphone = document.getElementById('btn-cerrar-aviso-iphone');
   const lienzo = document.getElementById('lienzo-3d');
 
   // Marca el cuerpo del documento si el dispositivo soporta pantalla táctil
@@ -82,6 +84,35 @@ export function crearInterfaz({ alJugar, alReiniciar, alIzquierda, alDerecha }) 
     document.addEventListener('webkitfullscreenchange', actualizarEstadoPantallaCompleta);
     actualizarEstadoPantallaCompleta();
   }
+
+  // Aviso discreto solo en iPhone con Safari, fuera de modo standalone y si no se cerró antes
+  const CLAVE_AVISO_IPHONE = 'mini_runner_aviso_iphone_cerrado';
+  const ua = navigator.userAgent || '';
+  const esIphone = /iPhone/.test(ua) && !/iPad|iPod/.test(ua);
+  const esSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  const esStandalone =
+    window.navigator.standalone === true ||
+    window.matchMedia?.('(display-mode: standalone)').matches === true;
+
+  let avisoCerradoAntes = false;
+  try {
+    avisoCerradoAntes = window.localStorage.getItem(CLAVE_AVISO_IPHONE) === '1';
+  } catch {
+    avisoCerradoAntes = false;
+  }
+
+  if (esIphone && esSafari && !esStandalone && !avisoCerradoAntes) {
+    avisoIphone.classList.remove('oculto');
+  }
+
+  btnCerrarAvisoIphone.addEventListener('click', () => {
+    avisoIphone.classList.add('oculto');
+    try {
+      window.localStorage.setItem(CLAVE_AVISO_IPHONE, '1');
+    } catch {
+      // Ignora si el almacenamiento local está bloqueado
+    }
+  });
 
   function actualizarPuntuacion(puntos) {
     valorPuntuacion.textContent = String(puntos);
